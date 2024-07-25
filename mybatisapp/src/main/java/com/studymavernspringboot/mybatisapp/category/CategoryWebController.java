@@ -32,15 +32,17 @@ public class CategoryWebController {
     }
 
     @PostMapping("/oldhtml/category_old_act")
-    public String categoryOldAct(@ModelAttribute CategoryDto dto) {
+    public String categoryOldInsert(@ModelAttribute CategoryDto dto, Model model) {
         try {
             if ( dto == null || dto.getName() == null || dto.getName().isEmpty() ) {
-                return "redirect:category_old";  // 브라우저 주소를 redirect 한다.
+                model.addAttribute("error_message", "이름이 비었습니다.");
+                return "error/error_insert";  // 브라우저 주소를 redirect 한다.
             }
             this.categoryService.insert(dto);
         } catch (Exception ex) {
             log.error(ex.toString());
-            return "oldhtml/category_old";  // resources/templates 폴더안의 화면파일
+            model.addAttribute("error_message", dto.getName() + " 중복입니다.");
+            return "error/error_insert";  // resources/templates 폴더안의 화면파일
         }
         return "redirect:category_old";  // 브라우저 주소를 redirect 한다.
     }
@@ -49,8 +51,9 @@ public class CategoryWebController {
     public String categoryOldView(Model model, @RequestParam Long id) {
         try {
             ICategory find = this.categoryService.findById(id);
-            if ( find == null ) {
-                return "redirect:category_old";
+            if ( id == null || id) {
+                model.addAttribute("NothingId", find);
+                return "error/error_find";
             }
             model.addAttribute("allList", find);
         } catch (Exception ex) {
@@ -60,14 +63,15 @@ public class CategoryWebController {
     }
 
     @PostMapping("/oldhtml/category_old_update")
-    public String categoryOldUpdate(@ModelAttribute CategoryDto categoryDto) {
+    public String categoryOldUpdate(Model model, @ModelAttribute CategoryDto categoryDto) {
         try {
             if (categoryDto == null || categoryDto.getId() <= 0 || categoryDto.getName().isEmpty()) {
                 return "redirect:category:old";
             }
             ICategory find = this.categoryService.findById(categoryDto.getId());
-            if (find == null) {
-                return "redirect:category_old";
+            if ( find == null ) {
+                model.addAttribute("NothingId", categoryDto.getId());
+                return "error/error_find";
             }
             this.categoryService.update(categoryDto.getId(), categoryDto);
         }catch (Exception ex) {
@@ -77,14 +81,15 @@ public class CategoryWebController {
     }
 
     @GetMapping("/oldhtml/category_old_delete")
-    public String categoryDelete(@RequestParam Long id) {
+    public String categoryDelete(Model model, @RequestParam Long id) {
         try {
             if (id == null || id <= 0) {
                 return "redirect:category_old";
             }
             ICategory find = this.categoryService.findById(id);
-            if (find == null) {
-                return "redirect:category_old";
+            if ( find == null ) {
+                model.addAttribute("NothingId", find);
+                return "error/error_find";
             }
             this.categoryService.remove(id);
         }catch (Exception ex) {
