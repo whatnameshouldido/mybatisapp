@@ -47,6 +47,6 @@
         SELECT id
              , name
         FROM category_tbl
-        WHERE name like '%${name}%'
+        WHERE name like CONCAT('%${name}%')
     </select>
 </mapper>

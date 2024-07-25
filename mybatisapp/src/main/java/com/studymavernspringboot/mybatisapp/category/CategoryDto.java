@@ -1,10 +1,11 @@
 package com.studymavernspringboot.mybatisapp.category;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 

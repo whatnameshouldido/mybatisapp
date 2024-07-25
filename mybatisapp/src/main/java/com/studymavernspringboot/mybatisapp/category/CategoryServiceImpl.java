@@ -94,13 +94,15 @@ public class CategoryServiceImpl implements ICategoryService<ICategory> {
         return find;
     }
     @Override
-    public List<ICategory> findAllByNameContains(String name) {
-        if (name == null || name.isEmpty()) {
+    public List<ICategory> findAllByNameContains(SearchCategoryDto dto) {
+        if (dto == null) {
 //            return List.of();
             return new ArrayList<>();
         }
+        dto.setOrderByWord("id DESC");
+        dto.setRowsOnePage(10);
         List<ICategory> list = this.getICategoryList(
-                this.categoryMybatisMapper.findAllByNameContains(name)
+                this.categoryMybatisMapper.findAllByNameContains(dto)
         );
         return list;
     }
