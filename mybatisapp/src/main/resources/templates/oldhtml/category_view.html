@@ -5,7 +5,7 @@
     <title>Category 보기</title>
 </head>
 <body>
-<form id="form" name="form" method="post" action="/ctweb/oldhtml/category_old_update" th:object="${allList}">
+<form id="form" name="form" method="post" action="/ctweb/oldhtml/category_old_update" th:object="${KJSData}">
     <input type="number" th:field="*{id}" readonly/>
     <input type="text" th:field="*{name}" />
     <input type="submit" value="수정"/>
