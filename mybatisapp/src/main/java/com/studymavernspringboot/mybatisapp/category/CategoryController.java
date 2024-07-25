@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/cat")
 public class CategoryController {
-    private static Logger logger = LoggerFactory.getLogger(CategoryController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
     @Autowired
     private CategoryServiceImpl categoryService;

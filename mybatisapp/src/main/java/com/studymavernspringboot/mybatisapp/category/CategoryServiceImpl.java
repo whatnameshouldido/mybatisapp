@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CategoryServiceImpl implements ICategoryService {
+public class CategoryServiceImpl implements ICategoryService<ICategory> {
     @Autowired
     private CategoryMybatisMapper categoryMybatisMapper;
 
@@ -71,7 +71,7 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public boolean remove(Long id) throws Exception {
+    public Boolean remove(Long id) throws Exception {
         if (id == null || id <= 0) {
             return false;
         }
