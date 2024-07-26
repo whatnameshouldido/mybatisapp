@@ -6,6 +6,16 @@
     <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
     <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
     <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(function(){
+            let totPage = ([[${searchCategoryDto}]] +9) / 10;
+            for(let i= 1; i<= totPage; i++) {
+                $("#pageDiv").append(" <a class='btn btn-success rounded-pill' href='category_old?page=" + i +
+                "&name=" + searchName + "'>[" + i + "]</a> ");
+            }
+        });
+    </script>
 </head>
 <body>
     <form id="form" name="form" method="post" action="/ctweb/oldhtml/category_old_act">
@@ -30,7 +40,10 @@
             </div>
         </div>
     </section>
-    <div>page : [[${searchCategoryDto.page}]], search name = [[${searchCategoryDto.name}]]</div>
+    <div id="pageDiv">
+    </div>
+    [(${pageHtml})]
+    <div>total : [[${searchCategoryDto.total}]],  page : [[${searchCategoryDto.page}]], search name = [[${searchCategoryDto.name}]]</div>
     <ul id="categoryList">
         <li>
             <span>id</span>
@@ -46,4 +59,6 @@
         </li>
     </ul>
 </body>
+<script>
+</script>
 </html>

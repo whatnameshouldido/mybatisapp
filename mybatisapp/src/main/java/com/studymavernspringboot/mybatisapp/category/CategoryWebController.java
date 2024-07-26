@@ -29,9 +29,14 @@ public class CategoryWebController {
 //            List<ICategory> allList = this.categoryService.getAllList();
             SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
                     .name(name).page(page).build();
+            int total = this.categoryService.countAllByNameContains(searchCategoryDto);
+            searchCategoryDto.setTotal(total);
             List<ICategory> allList = this.categoryService.findAllByNameContains(searchCategoryDto);
             model.addAttribute("allList", allList);
             model.addAttribute("searchCategoryDto", searchCategoryDto);
+            // java에서 html 문자를 만드는 고전적인 방식
+//            String sPages = this.getHtmlPageString(searchCategoryDto);
+//            model.addAttribute("pageHtml", sPages);
         } catch (Exception ex) {
             log.error(ex.toString());
             model.addAttribute("error_message", "오류가 발생했습니다. 관리자에게 문의하세요.");
@@ -39,6 +44,20 @@ public class CategoryWebController {
         }
         return "oldhtml/category_old";  // resources/templates 폴더안의 화면파일
     }
+
+//    private String getHtmlPageString(SearchCategoryDto searchCategoryDto) {
+//        StringBuilder sResult = new StringBuilder();
+//        int tPage = (searchCategoryDto.getTotal() + 9) / 10;
+//        sResult.append("<div>");
+//        for (int i = 0; i < tPage; i++) {
+//            sResult.append(" <a href='category_old?page=" + (i+1) +
+//                    "&name=" + searchCategoryDto.getName() + "'>");
+//            sResult.append(i+1);
+//            sResult.append("</a> ");
+//        }
+//        sResult.append("</div>");
+//        return sResult.toString();
+//    }
 
     @PostMapping("/oldhtml/category_old_act")
     public String categoryOldInsert(@ModelAttribute CategoryDto dto, Model model) {
