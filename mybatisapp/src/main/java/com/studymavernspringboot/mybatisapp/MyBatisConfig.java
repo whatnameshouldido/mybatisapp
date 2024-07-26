@@ -24,7 +24,7 @@ public class MyBatisConfig {
         sqlSessionFactoryBean.setDataSource(dataSource);
         sqlSessionFactoryBean.setTypeAliasesPackage("com.studymavernspringboot.mybatisapp");
         sqlSessionFactoryBean.setMapperLocations(
-                applicationContext.getResources("classpath:/mappers/**/*.xml"
+                applicationContext.getResources("classpath:/mapper/**/*.xml"
                 ));
         return sqlSessionFactoryBean.getObject();
     }
