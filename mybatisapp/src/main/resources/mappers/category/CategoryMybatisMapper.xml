@@ -43,10 +43,18 @@
         FROM category_tbl
     </select>
 
+    <select id="countAllByNameContains" parameterType="SearchCategoryDto" resultType="int">
+        SELECT count(*)
+        FROM category_tbl
+        WHERE name like CONCAT('%',#{name},'%')
+    </select>
+
     <select id="findAllByNameContains" resultType="CategoryDto">
         SELECT id
              , name
         FROM category_tbl
-        WHERE name like CONCAT('%${name}%')
+        WHERE name like CONCAT('%',#{name},'%')
+        ORDER BY ${orderByWord}
+        LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>
 </mapper>

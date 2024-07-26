@@ -18,5 +18,6 @@ public interface CategoryMybatisMapper {
 
     void update(CategoryDto dto);
 
+    int countAllByNameContains(SearchCategoryDto searchCategoryDto);
     List<CategoryDto> findAllByNameContains(SearchCategoryDto searchCategoryDto);
 }
