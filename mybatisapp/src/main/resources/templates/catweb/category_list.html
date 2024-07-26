@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interface</title>
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .rounded {
+            width: 90px;
+            height: 50px;
+            display:table-cell;
+            vertical-align: middle;
+            text-align:center;
+            border-radius: 70px;
+            border-color: rgb(47, 82, 143);
+            background-color: white;
+            padding: 30px 30px 5px 1px;
+        }
+        .container {
+            width: 1200px;
+            height: 500px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        .search-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .search-section input[type="text"] {
+            width: 90%;
+            padding: 5px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+        }
+        .search-section input[type="button"] {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            background-color: rgb(68, 114, 196);
+        }
+        .table-section {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+        .table-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        .table-section th, .table-section td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        .edit-button button {
+            padding: 5px 10px;
+            background-color: #eee;
+            border: 1px solid #ccc;
+        }
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .pagination a {
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            margin: 0 2px;
+            color: #000;
+            background-color: #eee;
+        }
+        .add-button {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .add-button button {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="search-section">
+        <div class="rounded">이름</div>
+        <input type="text" id="search" placeholder="검색할 이름 입력">
+        <input type="button" value="검색">
+    </div>
+    <div class="table-section">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="add-button">
+        <button>추가</button>
+    </div>
+    <div class="pagination">
+        <a href="#">Prev</a>
+        <div>
+            <a href="#">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#">6</a>
+            <a href="#">7</a>
+            <a href="#">8</a>
+            <a href="#">9</a>
+            <a href="#">10</a>
+        </div>
+        <a href="#">Next</a>
+    </div>
+</div>
+</body>
+</html>
