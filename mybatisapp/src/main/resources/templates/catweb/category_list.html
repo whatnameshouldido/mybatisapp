@@ -2,97 +2,94 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interface</title>
+    <title>분류 관리 화면</title>
     <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
     <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
     <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
-    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
         }
-        .rounded {
-            width: 90px;
-            height: 50px;
-            display:table-cell;
-            vertical-align: middle;
-            text-align:center;
-            border-radius: 70px;
-            border-color: rgb(47, 82, 143);
-            background-color: white;
-            padding: 30px 30px 5px 1px;
-        }
         .container {
-            width: 1200px;
-            height: 500px;
+            width: 80%;
             margin: 0 auto;
-            border: 1px solid #ccc;
-            padding: 10px;
             text-align: center;
         }
-        .search-section {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 10px;
+        form {
+            margin: 20px 0;
         }
-        .search-section input[type="text"] {
-            width: 90%;
+        input[type="text"] {
             padding: 5px;
-            margin-right: 10px;
-            border: 1px solid #ccc;
+            text-align:center;
+            font-size: 14px;
+            width: 400px;
+            border-radius:10px;
+            border-color: black;
+            border-style: solid;
+            border-width : 1px;
         }
-        .search-section input[type="button"] {
+        input[type="submit"], .button {
             padding: 5px 10px;
-            border: 1px solid #ccc;
-            background-color: rgb(68, 114, 196);
+            font-size: 14px;
+            border-radius:10px;
+            border-color: black;
+            border-style: solid;
+            border-width : 1px;
+            text-align:center;
+            background-color:rgb(68, 114, 196);
+            color:white;
         }
-        .table-section {
-            text-align: left;
-            margin-bottom: 10px;
-        }
-        .table-section table {
+        .table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 10px;
+            margin: 20px 0;
         }
-        .table-section th, .table-section td {
-            border: 1px solid #ccc;
+        .table th, .table td {
+            border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
-        .edit-button button {
-            padding: 5px 10px;
-            background-color: #eee;
-            border: 1px solid #ccc;
+        .table th {
+            background-color: #f2f2f2;
         }
         .pagination {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
+            justify-content: center;
+            margin: 20px 0;
         }
         .pagination a {
+            padding: 8px 16px;
+            margin: 0 4px;
             text-decoration: none;
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-            margin: 0 2px;
-            color: #000;
-            background-color: #eee;
+            color: white;
+            background-color: #007bff;
+            border-radius: 5px;
         }
-        .add-button {
-            display: flex;
-            justify-content: flex-end;
+        .pagination a.active {
+            background-color: #4CAF50;
         }
-        .add-button button {
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-            background-color: #eee;
+        .pagination a:hover {
+            background-color: #0056b3;
+        }
+        .rounded_box {
+            width:70px;
+            padding: 5px;
+            text-align:center;
+            border-radius:10px;
+            border-color: black;
+            border-style: solid;
+            border-width : 1px;
+            display:inline-block;
+            color:black;
         }
     </style>
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
     <script th:inline="javascript">
-        $(function() {
+        //$(document).ready(function(){
+        //    // Jquery 는 html 문서가 로딩이 완료 되면 이 부분을 실행한다.
+        //});
+        $(function(){
+            // jQuery 3.0 버전부터 실행할 기능을 정의해주세요.
             let totPage = ~~(([[${searchCategoryDto.total}]] + 9) / 10);
             let page = [[${searchCategoryDto.page}]];
             let startPage = getStartPage(page);
@@ -139,93 +136,36 @@
             }
             return ~~(totPage);
         }
-
-        function search() {
-            let name = $("#search").val();
-            let page = [[${searchCategoryDto.page}]];
-            document.location.url = "category_list?page=" + page + "&name=" + name;
-        }
     </script>
 </head>
 <body>
-
-<form th:action="@{category_list}" method="get">
-    <span>검색이름</span>
-    <input type="text" th:field="${searchCategoryDto.name}"/>
-    <input type="hidden" th:field="${searchCategoryDto.page}" />
-    <input type="submit" value="검색"/>
-</form>
-
-<div>
-    Category List
-</div>
-
-<ul id="categoryList">
-
-    <li>
-        <span>id</span>
-        <span> : </span>
-        <span>name</span>
-    </li>
-
-    <li th:each="item : ${categoryList}">
-        <a th:href="@{category_view(id=${item.id})}">
-            <span th:text="${item.id}"></span>
-            <span> : </span>
-            <span th:text="${item.name}"></span>
-        </a>
-    </li>
-</ul>
-<div>total : [[${searchCategoryDto.total}]]</div>
-<div><a href="category_add"><button>추가</button></a></div>
-<div id="pageDiv">
-</div>
-<div class="container">
-    <div class="search-section">
-        <div class="rounded">이름</div>
-        <label for="search"></label><input type="text" id="search" placeholder="검색할 이름 입력">
-        <input type="button" onclick="search();" value="검색">
-    </div>
-    <div class="table-section">
-        <table>
+    <div class="container">
+        <form th:action="@{category_list}" method="get">
+            <div class="rounded_box">이름</div>
+            <input type="text" th:field="${searchCategoryDto.name}" placeholder="검색할 이름 입력"/>
+            <input type="hidden" th:field="${searchCategoryDto.page}" />
+            <input type="submit" value="검색"/>
+        </form>
+        <div>
+            Category List
+        </div>
+        <table class="table">
             <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-            </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                </tr>
             </thead>
-            <tbody>
-            <tr th:each="category : ${allList}">
-                <td th:text="${category.id}"></td>
-                <td th:text="${category.name}"></td>
-            </tr>
+            <tbody id="categoryList">
+                <tr th:each="item : ${categoryList}">
+                    <td><a th:href="@{category_view(id=${item.id})}" th:text="${item.id}"></a></td>
+                    <td th:text="${item.name}"></td>
+                </tr>
             </tbody>
         </table>
+        <div>total : [[${searchCategoryDto.total}]]</div>
+        <div><a href="category_add"><button class="button">추가</button></a></div>
+        <div id="pageDiv" class="pagination"></div>
     </div>
-    <div class="add-button">
-        <form action="/catweb/category_list_add" method="get">
-            <input type="text" name="name" placeholder="Enter category name" required>
-            <button type="submit">추가</button>
-        </form>
-    </div>
-    <div class="pagination">
-        <a th:href="@{/catweb/category_list(page=${searchCategoryDto.page - 1}, name=${searchCategoryDto.name})}"
-           th:if="${searchCategoryDto.page > 1}">Prev</a>
-        <div>
-            <a th:href="@{/catweb/category_list(page=1, name=${searchCategoryDto.name})}">1</a>
-            <a th:href="@{/catweb/category_list(page=2, name=${searchCategoryDto.name})}">2</a>
-            <a th:href="@{/catweb/category_list(page=3, name=${searchCategoryDto.name})}">3</a>
-            <a th:href="@{/catweb/category_list(page=4, name=${searchCategoryDto.name})}">4</a>
-            <a th:href="@{/catweb/category_list(page=5, name=${searchCategoryDto.name})}">5</a>
-            <a th:href="@{/catweb/category_list(page=6, name=${searchCategoryDto.name})}">6</a>
-            <a th:href="@{/catweb/category_list(page=7, name=${searchCategoryDto.name})}">7</a>
-            <a th:href="@{/catweb/category_list(page=8, name=${searchCategoryDto.name})}">8</a>
-            <a th:href="@{/catweb/category_list(page=9, name=${searchCategoryDto.name})}">9</a>
-            <a th:href="@{/catweb/category_list(page=10, name=${searchCategoryDto.name})}">10</a>
-        </div>
-        <a th:href="@{/catweb/category_list(page=${searchCategoryDto.page + 1}, name=${searchCategoryDto.name})}"
-           th:if="${searchCategoryDto.page < searchCategoryDto.total / 10}">Next</a>
-    </div>
-</div>
 </body>
 </html>
