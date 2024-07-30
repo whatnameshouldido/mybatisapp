@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
     <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
     <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -90,20 +91,95 @@
             background-color: #eee;
         }
     </style>
-    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
-    <script>
+    <script th:inline="javascript">
         $(function() {
-            // html 문서가 로딩이 완료된 후에 jquery 실행 가능한 부분을 코딩할 수 있다.
+            let totPage = ~~(([[${searchCategoryDto.total}]] + 9) / 10);
+            let page = [[${searchCategoryDto.page}]];
+            let startPage = getStartPage(page);
+            let endPage = getEndPage(startPage);
+            let searchName = [[${searchCategoryDto.name}]];
+            let sClass = "btn btn-success rounded-pill";
+            let prev = (page-1) < 1 ? 1 : page-1;
+            let next = (page+1) >= totPage ? totPage : page+1;
+
+            $("#pageDiv").append(" <a class='" + sClass + "' href='category_list?page=" + prev +
+                "&name=" + searchName + "'>Prev</a> ");
+            for (let i = startPage; i <= endPage; i++) {
+                if (page == i) {
+                    sClass = "btn btn-primary rounded-pill";
+                }
+                $("#pageDiv").append(" <a class='" + sClass + "' href='category_list?page=" + i +
+                    "&name=" + searchName + "'>" + i + "</a> ");
+                sClass = "btn btn-success rounded-pill";
+            }
+            $("#pageDiv").append(" <a class='" + sClass + "' href='category_list?page=" + next +
+                "&name=" + searchName + "'>Next</a> ");
         });
+
+        function getStartPage(page) {
+            // 1~10 => 1, 11~20 => 11, 21~30 => 21
+            // let startPage = ((page - 1) / 10) * 10 + 1;
+            let one = 1;
+            let ten = ~~((page - 1) / 10) * 10;
+            let startPage = ten + one;
+            return ~~(startPage);
+        }
+
+        function getEndPage(startPage) {
+            // page 1~10 : total 35 : (1, 2, 3, 4)
+            // page 1~10 : total 90 : (1, 2, 3, 4, 5, 6, 7, 8, 9)
+            // page 1~10 : total 159 : (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+            // page 11~20 : total 159 : (11, 12, 13, 14, 15)
+            // page 11~20 : total 222 : (11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
+            // page 21~30 : total 222 : (21, 22, 23)
+            let totPage = ~~(([[${searchCategoryDto.total}]] + 9) / 10);
+            let tPage = startPage + 9;
+            if ( tPage < totPage ) {
+                return ~~(tPage);
+            }
+            return ~~(totPage);
+        }
 
         function search() {
             let name = $("#search").val();
-            let page = [[${categoryList.page}]];
+            let page = [[${searchCategoryDto.page}]];
             document.location.url = "category_list?page=" + page + "&name=" + name;
         }
     </script>
 </head>
 <body>
+
+<form th:action="@{category_list}" method="get">
+    <span>검색이름</span>
+    <input type="text" th:field="${searchCategoryDto.name}"/>
+    <input type="hidden" th:field="${searchCategoryDto.page}" />
+    <input type="submit" value="검색"/>
+</form>
+
+<div>
+    Category List
+</div>
+
+<ul id="categoryList">
+
+    <li>
+        <span>id</span>
+        <span> : </span>
+        <span>name</span>
+    </li>
+
+    <li th:each="item : ${categoryList}">
+        <a th:href="@{category_view(id=${item.id})}">
+            <span th:text="${item.id}"></span>
+            <span> : </span>
+            <span th:text="${item.name}"></span>
+        </a>
+    </li>
+</ul>
+<div>total : [[${searchCategoryDto.total}]]</div>
+<div><a href="category_add"><button>추가</button></a></div>
+<div id="pageDiv">
+</div>
 <div class="container">
     <div class="search-section">
         <div class="rounded">이름</div>
